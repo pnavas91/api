@@ -22,37 +22,17 @@ mysql = MySQL(app)
 
 CORS(app)
 
-@app.route("/login_usuarios", methods=["POST"])
-@cross_origin()
-def login_jugadores():
-    data = request.get_json()
-    email = data.get("email")
-    clave = data.get("clave")
-
-    cursor = mysql.connection.cursor()
-
-    sql = "select perfil from Jugadores where email=%s and clave=%s;"
-    cursor.execute(sql, (email, clave))
-
-    resultado = cursor.fetchone()
-
-    cursor.close()
-    response = make_response()
-
-    response = jsonify({"perfil":resultado[0]})
-    return response
-
 
 @app.route("/nuevo_usuario", methods=["POST"])
 @cross_origin()
-def insertar_usuario_jugadores():
+def insertar_usuario():
     nombre = request.json["nombre"]
     apellido = request.json["apellido"]
     provincia = request.json["provincia"]
 
     cursor = mysql.connection.cursor()
 
-    sql = "INSERT INTO Usuario(nombre, apellido, provincia) values(%s, %s, %s);"
+    sql = "INSERT INTO Usuarios(nombre, apellido, provincia) values(%s, %s, %s);"
     cursor.execute(sql, (nombre, apellido, provincia))
 
 
@@ -68,7 +48,7 @@ def insertar_usuario_jugadores():
 @cross_origin()
 def listar_jugadores():
     #consulta SQL
-    sql = "SELECT id, nombre, apellido, provincia FROM Usuarios"
+    sql = "SELECT idUsuarios, nombre, apellido, provincia FROM Usuarios"
 
     #crear el cursor
     cursor = mysql.connection.cursor()#mysql.connect.cursor()
@@ -98,7 +78,7 @@ def listar_jugadores():
 @app.route("/eliminar_usuario/<id>", methods=["DELETE"])
 def eliminar_usuario(id):
 
-    sql = "DELETE FROM Usuario WHERE id=%s"
+    sql = "DELETE FROM Usuarios WHERE idUsuarios=%s"
 
     #crear el cursor
     cursor = mysql.connection.cursor()
@@ -120,7 +100,7 @@ def eliminar_usuario(id):
 def actualizar_usuario(id):
     nombre = request.json["nom"]
 
-    sql = "UPDATE Usuarios SET nombre=%s WHERE id=%s"
+    sql = "UPDATE Usuarios SET nombre=%s WHERE idUsuarios=%s"
 
     #crear el cursor
     cursor = mysql.connection.cursor()
