@@ -22,6 +22,16 @@ mysql = MySQL(app)
 
 CORS(app)
 
+@app.route("/debug")
+def debug():
+    import os
+
+    return {
+        "host": os.getenv("MYSQLHOST"),
+        "user": os.getenv("MYSQLUSER"),
+        "db": os.getenv("MYSQLDATABASE"),
+        "port": os.getenv("MYSQLPORT")
+    }
 
 @app.route("/nuevo_usuario", methods=["POST"])
 @cross_origin()
