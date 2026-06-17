@@ -27,7 +27,7 @@ def debug():
     import os
 
     return {
-        "host": os.getenv("MYSQLHOST"),
+        "host": os.getenv("DB_HOST"),
         "user": os.getenv("MYSQLUSER"),
         "db": os.getenv("MYSQLDATABASE"),
         "port": os.getenv("MYSQLPORT")
