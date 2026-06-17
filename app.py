@@ -22,34 +22,6 @@ mysql = MySQL(app)
 
 CORS(app)
 
-@app.route("/debug")
-def debug():
-    import os
-
-    return {
-        "host": os.getenv("DB_HOST"),
-        "user": os.getenv("DB_USER"),
-        "db": os.getenv("DB_NAME"),
-        "port": os.getenv("DB_PORT")
-    }
-
-@app.route("/testdb")
-def testdb():
-    try:
-        cursor = mysql.connection.cursor()
-        cursor.execute("SELECT 1")
-        resultado = cursor.fetchone()
-        cursor.close()
-
-        return {
-            "status": "ok",
-            "resultado": resultado[0]
-        }
-    except Exception as e:
-        return {
-            "status": "error",
-            "mensaje": str(e)
-        }, 500
 
 @app.route("/nuevo_usuario", methods=["POST"])
 @cross_origin()
