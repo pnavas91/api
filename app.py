@@ -13,10 +13,10 @@ app = Flask(__name__)
 
 import os
 
-app.config["MYSQL_HOST"] = os.environ.get("MYSQL_HOST")
-app.config["MYSQL_USER"] = os.environ.get("MYSQL_USER")
-app.config["MYSQL_PASSWORD"] = os.environ.get("MYSQL_PASSWORD")
-app.config["MYSQL_DB"] = os.environ.get("MYSQL_DB")
+app.config["MYSQL_HOST"] = os.environ.get("DB_HOST")
+app.config["MYSQL_USER"] = os.environ.get("DB_USER")
+app.config["MYSQL_PASSWORD"] = os.environ.get("DB_PASSWORD")
+app.config["MYSQL_DB"] = os.environ.get("DB_NAME")
 
 mysql = MySQL(app)
 
@@ -28,10 +28,28 @@ def debug():
 
     return {
         "host": os.getenv("DB_HOST"),
-        "user": os.getenv("MYSQLUSER"),
-        "db": os.getenv("MYSQLDATABASE"),
-        "port": os.getenv("MYSQLPORT")
+        "user": os.getenv("DB_USER"),
+        "db": os.getenv("DB_NAME"),
+        "port": os.getenv("DB_PORT")
     }
+
+@app.route("/testdb")
+def testdb():
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT 1")
+        resultado = cursor.fetchone()
+        cursor.close()
+
+        return {
+            "status": "ok",
+            "resultado": resultado[0]
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "mensaje": str(e)
+        }, 500
 
 @app.route("/nuevo_usuario", methods=["POST"])
 @cross_origin()
