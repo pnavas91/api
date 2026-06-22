@@ -32,7 +32,7 @@ def insertar_usuario():
 
     cursor = mysql.connection.cursor()
 
-    sql = "INSERT INTO Usuarios(nombre, apellido, provincia) values(%s, %s, %s);"
+    sql = "INSERT INTO Recetas(nombre, apellido, provincia) values(%s, %s, %s);"
     cursor.execute(sql, (nombre, apellido, provincia))
 
 
@@ -99,6 +99,7 @@ def eliminar_usuario(id):
 @app.route("/actualizar_usuario/<id>", methods=["PUT"])
 def actualizar_usuario(id):
     nombre = request.json["nom"]
+    provincia = request.json["provincia"]
 
     sql = "UPDATE Usuarios SET nombre=%s WHERE idUsuarios=%s"
 
