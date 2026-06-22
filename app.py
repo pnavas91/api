@@ -101,11 +101,11 @@ def actualizar_usuario(id):
     nombre = request.json["nom"]
     provincia = request.json["provincia"]
 
-    sql = "UPDATE Usuarios SET nombre=%s WHERE idUsuarios=%s"
+    sql = "UPDATE Usuarios SET nombre=%s, provincia=%s WHERE idUsuarios=%s"
 
     #crear el cursor
     cursor = mysql.connection.cursor()
-    cursor.execute(sql, (nombre, id))
+    cursor.execute(sql, (nombre, provincia, id))
     mysql.connection.commit()
 
 
